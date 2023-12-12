@@ -5,23 +5,24 @@ class Solution {
         int answer = 0;
         
         Queue<Integer> queue = new LinkedList<>();
+        
+        Integer sum = 0;
         queue.add(0);
         
-        for (int i = 0; i < numbers.length; i++) {
-            int size = queue.size();
-            for (int j = 0; j < size; j++) {
-                int current = queue.poll();
-                queue.offer(current + numbers[i]);
-                queue.offer(current - numbers[i]);
+        for(int i=0; i<numbers.length; i++) {
+            for(int j=0; j<queue.size(); j++) {
+                sum = queue.poll();
+                queue.add(sum + numbers[i]);
+                queue.add(sum - numbers[i]);   
             }
         }
         
-        while (!queue.isEmpty()) {
-            if (queue.poll() == target) {
-                answer++;
+        while(!queue.isEmpty()){
+            Integer result = queue.poll();
+            if(result == target) {
+                answer = answer+1;
             }
         }
-        
         return answer;
     }
 }
