@@ -12,12 +12,11 @@ class Main {
             return;
         }
         
-        for(int i=0; i<graph[idx].size(); i++) {
-            visited[idx] = true;   
+        visited[idx] = true;
 
-            int next = graph[idx].get(i);
-            if(visited[next] == false) {
-               dfs(next);   
+        for (int next : graph[idx]) {
+            if (!visited[next]) {
+                dfs(next);
             }
         }
         answer++;
