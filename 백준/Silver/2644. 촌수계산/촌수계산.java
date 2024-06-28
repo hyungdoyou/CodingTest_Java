@@ -2,7 +2,7 @@ import java.util.*;
 import java.io.*;
 
 class Main {
-    static boolean[][] graph;
+    static ArrayList<Integer>[] graph;
     static boolean[] visited;
     static int N, start, end, answer;
 
@@ -13,9 +13,11 @@ class Main {
             return;
         }
 
-        for (int i = 1; i <= N; i++)
-            if (visited[i] == false && graph[idx][i])
-                dfs(i, count + 1);
+        for (int next : graph[idx]) {
+            if (!visited[next]) {
+                dfs(next, count + 1);
+            }
+        }
     }
 
     public static void main(String[] args) throws IOException{
@@ -32,18 +34,22 @@ class Main {
         int M = Integer.parseInt(br.readLine());
         
         // 1. graph에 연결 정보 채우기
-        graph = new boolean[N + 1][N + 1];
-        visited = new boolean[N + 1];
+        graph = new ArrayList[N+1];
+        visited = new boolean[N+1];
         answer = -1;
 
         int x, y;
+        for(int i=1; i<=N; i++) {
+            graph[i] = new ArrayList<>();
+        }
 
         for(int i = 0; i < M; i++){
             st = new StringTokenizer(br.readLine());
             x = Integer.parseInt(st.nextToken());
             y = Integer.parseInt(st.nextToken());
-            graph[y][x] = true;
-            graph[x][y] = true;
+            
+            graph[x].add(y);
+            graph[y].add(x);
         }
 
         // 2. dfs(재귀함수 호출)
