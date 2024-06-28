@@ -1,54 +1,58 @@
-import java.io.*;
 import java.util.*;
+import java.io.*;
 
-public class Main {
+class Main {
     static int[][] map;
-    static Set<String> results; // 중복을 제거하기 위해 Set 사용
+    static Set<String> result;
     
-    static int[] dy = {-1, 1, 0, 0}; // 상 하 좌 우
-    static int[] dx = {0, 0, -1, 1};
+    static int[] dirY = {1, -1, 0, 0};
+    static int[] dirX = {0, 0, 1, -1};
+    
+    public static void dfs(int y, int x, int depth, String current) {
+        // 탈출
+        if(depth == 6) {
+            result.add(current);
+            return;
+        }
+        
+        for (int i = 0; i < 4; i++) {
+            int newY = y + dirY[i];
+            int newX = x + dirX[i];
+            
+            if (newY >= 1 && newY <= 5 && newX >= 1 && newX <= 5) {
+                    dfs(newY, newX, depth+1, current + map[newY][newX]);
+            }
+        }
+    }
     
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         
-        map = new int[5][5];
-        results = new HashSet<>();
+        map = new int[6][6];
+        result = new HashSet<>();
         
-        // 입력 받기
-        for (int i = 0; i < 5; i++) {
+        // 입력 처리
+        for (int i = 1; i <= 5; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
-            for (int j = 0; j < 5; j++) {
+            for (int j = 1; j <= 5; j++) {
                 map[i][j] = Integer.parseInt(st.nextToken());
             }
         }
         
-        // 모든 위치에서 시작하여 DFS 수행
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
-                dfs(i, j, 1, String.valueOf(map[i][j])); // 시작 위치와 첫 번째 숫자
+        // DFS 수행
+        int answer = 0;
+        for (int i = 1; i <= 5; i++) {
+            for (int j = 1; j <= 5; j++) {
+                    dfs(i, j, 1, String.valueOf(map[i][j])); // 시작 위치와 첫 번째 숫자
             }
         }
         
-        // 결과 출력
-        System.out.println(results.size());
+        // 정답 출력
+        bw.write(String.valueOf(result.size()));
         
+        // 자원 해제
         br.close();
-    }
-    
-    // DFS 함수
-    static void dfs(int y, int x, int depth, String current) {
-        if (depth == 6) {
-            results.add(current); // 여섯 자리 수 추가
-            return;
-        }
-        
-        for (int d = 0; d < 4; d++) {
-            int ny = y + dy[d];
-            int nx = x + dx[d];
-            
-            if (ny >= 0 && ny < 5 && nx >= 0 && nx < 5) {
-                dfs(ny, nx, depth + 1, current + map[ny][nx]); // 다음 칸으로 이동
-            }
-        }
+        bw.close();
     }
 }
