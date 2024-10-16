@@ -1,30 +1,38 @@
 import java.util.*;
+
 class Solution {
     public int solution(int n, int[] lost, int[] reserve) {
-        int answer = n-lost.length;
-        Arrays.sort(reserve);
-        Arrays.sort(lost);
+        int answer = 0;
         
-        for(int i=0; i<reserve.length; i++) {
-              for(int j=0; j<lost.length; j++) {
-                  if(reserve[i] == lost[j]) {
-                        answer = answer + 1;
-                        reserve[i] = -1;
-                        lost[j] = -1;
-                        break;
-                    }
-              }
+        // set 을 만듬
+        Set<Integer> resSet = new HashSet<>();
+        Set<Integer> lostSet = new HashSet<>();
+        
+        for(int i : reserve) {
+            resSet.add(i);
         }
-        for(int i=0; i<reserve.length; i++) {
-              for(int j=0; j<lost.length; j++) {
-                  if(reserve[i] == lost[j] - 1 || reserve[i] == lost[j] + 1) {
-                        answer = answer + 1;
-                        reserve[i] = -1;
-                        lost[j] = -1;
-                        break;
-                    }
-              }
+        
+        for(int i : lost) {
+            if(resSet.contains(i)) {
+                resSet.remove(i);
+            } else {
+                lostSet.add(i);
+            }
         }
-    return answer;
+        
+        for(int i : resSet) {
+            if(lostSet.contains(i-1)) {
+                lostSet.remove(i-1);
+            } else if(lostSet.contains(i+1)) {
+                lostSet.remove(i+1);
+            }
+        }
+        
+        answer = n - lostSet.size();
+        
+        // 여분을 기준으로 앞뒤 학생에 체육복을 빌려줌
+        
+        // 총 학생수에서 lost에 남은 학생을 뺌
+        return answer;
     }
 }
