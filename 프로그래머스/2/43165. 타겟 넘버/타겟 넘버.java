@@ -1,19 +1,32 @@
 class Solution {
-    int answer = 0;
+    int answer;
+    int target;
+    int[] numbers;
 
-    public int solution(int[] numbers, int target) {
-        dfs(numbers, 0, target, 0);
-
-        return answer;
-    }
-
-    // 깊이 우선 탐색
-    public void dfs(int[] numbers, int depth, int target, int sum){
-        if(depth == numbers.length){ // 마지막 노드 까지 탐색한 경우
-            if(target == sum) answer++;
-        } else {
-            dfs(numbers, depth + 1, target, sum + numbers[depth]); // 해당 노드의 값을 더하고 다음 깊이 탐색
-            dfs(numbers, depth + 1, target, sum - numbers[depth]); // 해당 노드의 값을 빼고 다음 깊이 탐색
+        // 깊이 우선 탐색
+    public void dfs(int index, int sum) {
+        // 탈출 조건 : 마지막 노드까지 탐색한 경우
+        if (index == numbers.length) {
+            if (target == sum) {
+                answer++; // 타겟 숫자와 합계가 같으면 방법의 수 증가
+            }
+            return; // 탐색 종료
         }
+
+        // 수행동작
+        // 해당 노드의 값을 더하고 다음 깊이 탐색
+        dfs(index + 1, sum + numbers[index]);
+        // 해당 노드의 값을 빼고 다음 깊이 탐색
+        dfs(index + 1, sum - numbers[index]);
+    }
+    
+    
+    public int solution(int[] numbers, int target) {
+        answer = 0;
+        this.numbers = numbers;
+        this.target = target;
+        
+        dfs(0, 0); // DFS 탐색 시작
+        return answer; // 최종 결과 반환
     }
 }
