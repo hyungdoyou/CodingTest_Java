@@ -1,23 +1,27 @@
 class Solution {
     public String solution(String s) {
         String answer = "";
-        String[] str = s.split(" ");
-        String min = str[0];
-        String max = str[0];
         
-        for(int i=1; i<str.length; i++) {
-            if(Integer.parseInt(str[i]) > Integer.parseInt(max)) {
-                max = str[i];
+        String[] arr = s.split(" ");
+        
+        int min = Integer.parseInt(arr[0]);
+        
+        for(int i = 1; i < arr.length; i++) {
+            if(Integer.parseInt(arr[i]) < min) {
+                min = Integer.parseInt(arr[i]);
             }
         }
         
-        for(int i=1; i<str.length; i++) {
-            if(Integer.parseInt(str[i]) < Integer.parseInt(min)) {
-                min = str[i];
+        int max = Integer.parseInt(arr[0]);
+        
+        for(int i = 1; i < arr.length; i++) {
+            if(Integer.parseInt(arr[i]) > max) {
+                max = Integer.parseInt(arr[i]);
             }
         }
         
         answer = min + " " + max;
+
         return answer;
     }
 }
