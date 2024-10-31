@@ -25,7 +25,7 @@ class Main {
                 basket = -1;
             }
         }
-        bw.write(basket + "");
+        bw.write(String.valueOf(basket));
         
         br.close();
         bw.close();
